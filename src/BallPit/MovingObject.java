@@ -10,10 +10,16 @@ public class MovingObject implements Moveable {
     private double y;
     private double vx;
     private double vy;
+    protected int xPos; //this is basically the output, so :P
+    protected int yPos;
 
-    public MovingObject(double X, double Y) {
-        x = X;
-        y = Y;
+    public MovingObject(double x, double y) {
+        this(x, y, 0, 0);
+    }
+    
+    public MovingObject(double x, double y, double vx, double vy) {
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -50,7 +56,7 @@ public class MovingObject implements Moveable {
     public void setX(double x) {
         this.x = x;
     }
-
+    
     /**
      * @param y the y to set
      */
@@ -70,5 +76,22 @@ public class MovingObject implements Moveable {
      */
     public void setVY(double vy) {
         this.vy = vy;
+    }
+    
+    /**
+     * Update xPos and yPos
+     */
+    public void updatePos() {
+        xPos = (int)x;
+        yPos = (int)y;
+    }
+    
+    /**
+     * Move the object
+     */
+    public void move() {
+        xPos += vx;
+        yPos += vy;
+        updatePos();
     }
 }
