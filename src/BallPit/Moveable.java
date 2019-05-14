@@ -6,20 +6,20 @@ package BallPit;
  */
 public interface Moveable {
 
-    public void setX(int x);
+    public void setX(double x);
 
-    public void setY(int y);
+    public void setY(double y);
 
-    public void setVX(int v);
+    public void setVX(double v);
 
-    public void setVY(int v);
+    public void setVY(double v);
 
-    public int getX();
+    public double getX();
 
-    public int getY();
+    public double getY();
 
-    public int getVX();
+    public double getVX();
 
-    public int getVY();
+    public double getVY();
 
 }

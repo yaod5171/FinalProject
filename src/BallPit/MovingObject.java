@@ -6,12 +6,12 @@ package BallPit;
  */
 public class MovingObject implements Moveable {
 
-    private int x;
-    private int y;
-    private int vx;
-    private int vy;
+    private double x;
+    private double y;
+    private double vx;
+    private double vy;
 
-    public MovingObject(int X, int Y) {
+    public MovingObject(double X, double Y) {
         x = X;
         y = Y;
     }
@@ -19,56 +19,56 @@ public class MovingObject implements Moveable {
     /**
      * @return the x
      */
-    public int getX() {
+    public double getX() {
         return x;
     }
 
     /**
      * @return the y
      */
-    public int getY() {
+    public double getY() {
         return y;
     }
 
     /**
      * @return the vx
      */
-    public int getVX() {
+    public double getVX() {
         return vx;
     }
 
     /**
      * @return the vy
      */
-    public int getVY() {
+    public double getVY() {
         return vy;
     }
 
     /**
      * @param x the x to set
      */
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
     /**
      * @param y the y to set
      */
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
     /**
      * @param vx the vx to set
      */
-    public void setVX(int vx) {
+    public void setVX(double vx) {
         this.vx = vx;
     }
 
     /**
      * @param vy the vy to set
      */
-    public void setVY(int vy) {
+    public void setVY(double vy) {
         this.vy = vy;
     }
 }
