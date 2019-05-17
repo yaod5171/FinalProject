@@ -90,8 +90,8 @@ public class MovingObject implements Moveable {
      * Move the object
      */
     public void move() {
-        xPos += vx;
-        yPos += vy;
+        x += vx;
+        y += vy;
         updatePos();
     }
     

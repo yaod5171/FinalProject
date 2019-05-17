@@ -12,16 +12,17 @@ public class Ball extends MovingObject /*implements Collideable*/ {
     private int size;
     private int weight;
     private Color color;
-
-    private Ball(double x, double y) {
+    
+    public Ball(double x, double y) {
         this(x, y, 5, 25, colorByDensity(5, 25));
     }
 
-    private Ball(double x, double y, int size, int weight) {
+    public Ball(double x, double y, int size, int weight) {
         this(x, y, size, weight, colorByDensity(size, weight));
     }
 
-    private Ball(double x, double y, Color color) {
+
+    public Ball(double x, double y, Color color) {
         this(x, y, 5, 25, color);
     }
 
@@ -30,6 +31,7 @@ public class Ball extends MovingObject /*implements Collideable*/ {
         this.size = size;
         this.weight = weight;
         this.color = color;
+        updatePos();
     }
 
     /**
@@ -41,13 +43,14 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      */
     private static Color colorByDensity(int size, int weight) {
         double densityTop = 5;
-        double density = (double) weight / (size ^ 2);
+        double density = (double) weight / Math.pow(size, 2);
+        System.out.println(density);
         float hue;
         if (density < densityTop) {
             hue = (float) (density / densityTop);
-            hue = 1 - hue;
+            hue = 1 - hue;/*
             hue += 0.2;
-            hue = Math.min(hue, 1);
+            hue = (float)Math.min(hue, 0.8);*/
         } else {
             hue = 0;
         }
@@ -72,6 +75,15 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      */
     public boolean collideWithBall(Ball obj) {
         return (dist(obj.getX(), obj.getY()) <= 2 * size);
+    }
+    
+    /**
+     * Draw the ball to a window
+     * @param window the window to draw to
+     */
+    public void draw(Graphics window) {
+        window.setColor(color);
+        window.fillOval(xPos, yPos, 2*size, 2*size);
     }
 
 }
