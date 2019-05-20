@@ -35,7 +35,7 @@ public class Balls {
     public List<Ball> getBalls() {
         return balls;
     }
-    
+
     public Ball getBall(int ind) {
         return balls.get(ind);
     }
@@ -49,6 +49,18 @@ public class Balls {
     public void drawAll(Graphics window) {
         for (Ball b : balls) {
             b.draw(window);
+        }
+    }
+
+    public void checkAllForCollisions() {
+        for (int i = 0; i < balls.size(); i++) {
+            for (int j = i + 1; j < balls.size(); j++) { //make sure we don't collide twice
+                Ball b = balls.get(i);
+                Ball c = balls.get(j);
+                if (b.collideWithBall(c) && !b.equals(c)) {
+                    b.bounceOffBall(c);
+                }
+            }
         }
     }
 

@@ -16,7 +16,7 @@ public class MovingObject implements Moveable {
     public MovingObject(double x, double y) {
         this(x, y, 0, 0);
     }
-    
+
     public MovingObject(double x, double y, double vx, double vy) {
         this.x = x;
         this.y = y;
@@ -51,12 +51,28 @@ public class MovingObject implements Moveable {
     }
 
     /**
+     * calculate and return the speed
+     * @return the speed
+     */
+    public double getSpeed() {
+        return Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2));
+    }
+    
+    /**
+     * calculate and return the direction
+     * @return the direction in radians
+     */
+    public double getDir() {
+        return Math.atan(vy/vx);
+    }
+
+    /**
      * @param x the x to set
      */
     public void setX(double x) {
         this.x = x;
     }
-    
+
     /**
      * @param y the y to set
      */
@@ -79,13 +95,23 @@ public class MovingObject implements Moveable {
     }
     
     /**
+     * Set the speed/dir
+     * @param speed the speed to set
+     * @param dir the dir to set
+     */
+    public void setSpeedDir(double speed, double dir) {
+        vx = speed * Math.cos(dir);
+        vy = speed * Math.sin(dir);
+    }
+
+    /**
      * Update xPos and yPos
      */
     public void updatePos() {
-        xPos = (int)x;
-        yPos = (int)y;
+        xPos = (int) x;
+        yPos = (int) y;
     }
-    
+
     /**
      * Move the object
      */
@@ -94,8 +120,8 @@ public class MovingObject implements Moveable {
         y += vy;
         updatePos();
     }
-    
+
     public double dist(double x, double y) {
-        return Math.sqrt(Math.pow(this.x-x,2) + Math.pow(this.y-y,2));
+        return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
     }
 }

@@ -25,9 +25,7 @@ public class BallPit extends Canvas implements Runnable {
         
         balls = new Balls();
         balls.addBall(new Ball(200, 200, 15, 225));
-        balls.getBall(0).setVX(1);
         balls.addBall(new Ball(100, 100));
-        balls.addBall(new Ball(100, 200));
         balls.addBall(new Ball(200, 100));
         makeBall(100, 200, 200, 100);
         density = 4;
@@ -62,6 +60,7 @@ public class BallPit extends Canvas implements Runnable {
     public void update(Graphics window) {
         balls.addGravity();
         balls.moveAll();
+        balls.checkAllForCollisions();
         
         paint(window);
     }
@@ -98,7 +97,7 @@ public class BallPit extends Canvas implements Runnable {
     public void run() {
         try {
             while (true) {
-                Thread.currentThread().sleep(5);
+                Thread.currentThread().sleep(50);
                 repaint();
             }
         } catch (Exception e) {

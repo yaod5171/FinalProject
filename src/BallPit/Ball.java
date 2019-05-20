@@ -12,7 +12,7 @@ public class Ball extends MovingObject /*implements Collideable*/ {
     private int size;
     private int weight;
     private Color color;
-    
+
     public Ball(double x, double y) {
         this(x, y, 5, 25, colorByDensity(5, 25));
     }
@@ -20,7 +20,6 @@ public class Ball extends MovingObject /*implements Collideable*/ {
     public Ball(double x, double y, int size, int weight) {
         this(x, y, size, weight, colorByDensity(size, weight));
     }
-
 
     public Ball(double x, double y, Color color) {
         this(x, y, 5, 25, color);
@@ -34,6 +33,14 @@ public class Ball extends MovingObject /*implements Collideable*/ {
         updatePos();
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
     /**
      * Calculates a color based on the density
      *
@@ -44,22 +51,23 @@ public class Ball extends MovingObject /*implements Collideable*/ {
     private static Color colorByDensity(int size, int weight) {
         double densityTop = 5;
         double density = (double) weight / Math.pow(size, 2);
-        System.out.println(density);
         float hue;
         if (density < densityTop) {
             hue = (float) (density / densityTop);
             hue = 1 - hue;/*
-            hue += 0.2;
-            hue = (float)Math.min(hue, 0.8);*/
+             hue += 0.2;
+             hue = (float)Math.min(hue, 0.8);*/
+
         } else {
             hue = 0;
         }
 
         return Color.getHSBColor(hue, 1, 1);
     }
-    
+
     /**
      * Check if a point has collided with the ball
+     *
      * @param x x of the point
      * @param y y of the point
      * @return true if point is inside or on ball
@@ -70,20 +78,60 @@ public class Ball extends MovingObject /*implements Collideable*/ {
 
     /**
      * Check if the ball has collided with another ball
+     *
      * @param obj the other ball to check
      * @return true if the balls have collided
      */
     public boolean collideWithBall(Ball obj) {
-        return (dist(obj.getX(), obj.getY()) <= 2 * size);
+        return (dist(obj.getX(), obj.getY()) <= size + obj.getSize());
     }
-    
+
+    /**
+     * Bounce off a ball.
+     * 
+     * @param obj the ball to bounce off of
+     */
+    public void bounceOffBall(Ball obj) {
+        //find the angle of collision
+        double collisionAngle = Math.atan((obj.getY() - this.getY()) / (obj.getX() - this.getX()));
+        //calculate each ball's angle of incidence from the angle of collision
+        double thisIncidence = this.getDir() - collisionAngle;
+        double objIncidence = obj.getDir() - collisionAngle;
+        //calculate each ball's velocity components
+        double thisComponent = this.getSpeed() * Math.cos(thisIncidence);
+        double objComponent = obj.getSpeed() * Math.cos(objIncidence);
+        double thisParallel = this.getSpeed() * Math.sin(thisIncidence);
+        double objParallel = obj.getSpeed() * Math.sin(objIncidence);
+        //calculate the momentum of each ball along the collision
+        double thisMomentum = thisComponent * this.weight;
+        double objMomentum = objComponent * obj.getWeight();
+        //completely switch momentums; this is a perfectly elastic collision.
+        double temp = objMomentum;
+        objMomentum = thisMomentum;
+        thisMomentum = temp;
+        //convert back to velocity
+        thisComponent = thisMomentum / this.weight;
+        objComponent = objMomentum / obj.getWeight();
+        //re-calculate the speed and direction
+        double thisSpeed = Math.sqrt(Math.pow(thisComponent, 2) + Math.pow(thisParallel, 2));
+        double thisDir = Math.atan(thisComponent/thisParallel) - collisionAngle + Math.PI/2;
+        double objSpeed = Math.sqrt(Math.pow(objComponent, 2) + Math.pow(objParallel, 2));
+        double objDir = Math.atan(objComponent/objParallel) - collisionAngle + Math.PI/2;
+        //finally, reassign the speed of each.
+        this.setSpeedDir(thisSpeed, thisDir);
+        obj.setSpeedDir(objSpeed, thisDir);
+    }
+
     /**
      * Draw the ball to a window
+     *
      * @param window the window to draw to
      */
     public void draw(Graphics window) {
         window.setColor(color);
-        window.fillOval(xPos, yPos, 2*size, 2*size);
+        window.fillOval(xPos - size, yPos - size, 2 * size, 2 * size);
+        window.setColor(Color.BLACK);
+        window.drawLine(xPos, yPos, xPos + (int) (20 * Math.cos(getDir())), yPos + (int) (20 * Math.sin(getDir())));
     }
 
 }
