@@ -22,14 +22,15 @@ public class BallPit extends Canvas implements Runnable {
     public BallPit() {
         size = 15;
         density = 1.0;
-        
+
         balls = new Balls();
         balls.addBall(new Ball(200, 200, 15, 225));
         balls.addBall(new Ball(100, 100));
         balls.addBall(new Ball(200, 100));
         makeBall(100, 200, 200, 100);
-        density = 4;
         makeBall(100, 300, 200, 200);
+        makeBall(500, 100, 500, 500);
+        makeBall(500, 500, 500, 100);
 
         new Thread(this).start();
         setVisible(true);
@@ -45,14 +46,14 @@ public class BallPit extends Canvas implements Runnable {
      */
     public void makeBall(int x1, int y1, int x2, int y2) {
         final double SCALE = 0.025;
-        
+
         Ball newBall = new Ball(x1, y1, size, (int) (Math.pow(size, 2) * density));
         int dx = x2 - x1;
         int dy = y2 - y1;
-        
+
         newBall.setVX(SCALE * dx);
         newBall.setVY(SCALE * dy);
-        
+
         balls.addBall(newBall);
     }
 
@@ -61,7 +62,7 @@ public class BallPit extends Canvas implements Runnable {
         balls.addGravity();
         balls.moveAll();
         balls.checkAllForCollisions();
-        
+
         paint(window);
     }
 
@@ -82,11 +83,10 @@ public class BallPit extends Canvas implements Runnable {
         Graphics graphToBack = back.createGraphics();
 
         //end code from APlusCompSci
-        
         //draw background each frame
         graphToBack.setColor(Color.WHITE);
         graphToBack.fillRect(0, 0, 800, 600);
-        
+
         //draw the balls
         balls.drawAll(graphToBack);
 
@@ -97,7 +97,7 @@ public class BallPit extends Canvas implements Runnable {
     public void run() {
         try {
             while (true) {
-                Thread.currentThread().sleep(50);
+                Thread.currentThread().sleep(100);
                 repaint();
             }
         } catch (Exception e) {
