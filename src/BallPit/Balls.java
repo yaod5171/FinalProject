@@ -76,9 +76,9 @@ public class Balls {
 //                Ball B = balls.get(j);
 //                xDist = A.getX() - B.getX();
 //                yDist = A.getY() - B.getY();
-//                double distSquared = xDist * xDist + yDist * yDist;
+//                double distSquared = MovingObject.square(xDist) * MovingObject.square(yDist);
 //                //Check the squared distances instead of the the distances, same result, but avoids a square root.
-//                if (distSquared <= (A.getSize() + B.getSize()) * (A.getSize() + B.getSize())) {
+//                if (distSquared <= MovingObject.square(A.getSize() + B.getSize())) {
 //                    double xVelocity = B.getVX() - A.getVX();
 //                    double yVelocity = B.getVY() - A.getVY();
 //                    double dotProduct = xDist * xVelocity + yDist * yVelocity;

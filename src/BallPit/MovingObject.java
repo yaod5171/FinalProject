@@ -52,18 +52,20 @@ public class MovingObject implements Moveable {
 
     /**
      * calculate and return the speed
+     *
      * @return the speed
      */
     public double getSpeed() {
         return Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2));
     }
-    
+
     /**
      * calculate and return the direction
+     *
      * @return the direction in radians
      */
     public double getDir() {
-        return Math.atan(vy/vx);
+        return Math.atan(vy / vx);
     }
 
     /**
@@ -93,9 +95,10 @@ public class MovingObject implements Moveable {
     public void setVY(double vy) {
         this.vy = vy;
     }
-    
+
     /**
      * Set the speed/dir
+     *
      * @param speed the speed to set
      * @param dir the dir to set
      */
@@ -121,7 +124,20 @@ public class MovingObject implements Moveable {
         updatePos();
     }
 
+    public double sqDist(double x, double y) {
+        return Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2);
+    }
+
     public double dist(double x, double y) {
-        return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
+        return Math.sqrt(sqDist(x, y));
+    }
+    
+    /**
+     * End object methods
+     * Begin helper methods
+     */
+    
+    public static double square(double a) { //faster than Math.pow
+        return a * a;
     }
 }

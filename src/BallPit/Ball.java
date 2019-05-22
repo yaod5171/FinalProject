@@ -50,7 +50,7 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      */
     private static Color colorByDensity(int size, int weight) {
         double densityTop = 5;
-        double density = (double) weight / Math.pow(size, 2);
+        double density = (double) weight / MovingObject.square(size);
         float hue;
         if (density < densityTop) {
             hue = (float) (density / densityTop);
@@ -73,7 +73,7 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      * @return true if point is inside or on ball
      */
     public boolean pointCollide(int x, int y) {
-        return (Math.pow((x - this.xPos), 2) + Math.pow((y - this.yPos), 2) <= Math.pow(size, 2));
+        return (MovingObject.square(x - this.xPos) +MovingObject.square(y - this.yPos) <= MovingObject.square(size));
     }
 
     /**
@@ -83,7 +83,7 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      * @return true if the balls have collided
      */
     public boolean collideWithBall(Ball obj) {
-        return (dist(obj.getX(), obj.getY()) <= size + obj.getSize());
+        return (sqDist(obj.getX(), obj.getY()) <= MovingObject.square(size + obj.getSize()));
     }
 
     /**
@@ -113,9 +113,9 @@ public class Ball extends MovingObject /*implements Collideable*/ {
 //        thisComponent = thisMomentum / this.weight;
 //        objComponent = objMomentum / obj.getWeight();
 //        //re-calculate the speed and direction
-//        double thisSpeed = Math.sqrt(Math.pow(thisComponent, 2) + Math.pow(thisParallel, 2));
+//        double thisSpeed = Math.sqrt(MovingObject.square(thisComponent) + MovingObject.square(thisParallel));
 //        double thisDir = Math.atan2(thisComponent, thisParallel) - collisionAngle + Math.PI / 2;
-//        double objSpeed = Math.sqrt(Math.pow(objComponent, 2) + Math.pow(objParallel, 2));
+//        double objSpeed = Math.sqrt(MovingObject.square(objComponent) + MovingObject.square(objParallel, 2));
 //        double objDir = Math.atan2(objComponent, objParallel) - collisionAngle + Math.PI / 2;
 //        System.out.println(thisDir + " " + objDir);
 //        //finally, reassign the speed of each.
@@ -125,17 +125,21 @@ public class Ball extends MovingObject /*implements Collideable*/ {
 //        obj.move();
 //    }
     /**
-     * Bounce off a ball 
-     * adapted from https://gamedevelopment.tutsplus.com/tutorials/when-worlds-collide-simulating-circle-circle-collisions--gamedev-769
+     * Bounce off a ball
      *
      * @param obj the ball to bounce off of
      */
     public void bounceOffBall(Ball obj) {
+        //change the coordinate axes to reflect the direction of collision
+        
+        //adapted from https://gamedevelopment.tutsplus.com/tutorials/when-worlds-collide-simulating-circle-circle-collisions--gamedev-769
         double combinedWeight = this.getWeight() + obj.getWeight();
         double newVX1 = (this.getVX() * (this.getWeight() - obj.getWeight() + 2 * obj.getWeight() * obj.getVX())) / combinedWeight;
         double newVY1 = (this.getVY() * (this.getWeight() - obj.getWeight() + 2 * obj.getWeight() * obj.getVY())) / combinedWeight;
         double newVX2 = (obj.getVX() * (obj.getWeight() - this.getWeight() + 2 * this.getWeight() * this.getVX())) / combinedWeight;
         double newVY2 = (obj.getVX() * (obj.getWeight() - this.getWeight() + 2 * this.getWeight() * this.getVX())) / combinedWeight;
+        
+        
         this.setVX(newVX1);
         this.setVY(newVY1);
         obj.setVX(newVX2);
