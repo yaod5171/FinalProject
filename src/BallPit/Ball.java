@@ -73,7 +73,7 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      * @return true if point is inside or on ball
      */
     public boolean pointCollide(int x, int y) {
-        return (MovingObject.square(x - this.xPos) +MovingObject.square(y - this.yPos) <= MovingObject.square(size));
+        return (MovingObject.square(x - this.xPos) + MovingObject.square(y - this.yPos) <= MovingObject.square(size));
     }
 
     /**
@@ -91,63 +91,65 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      *
      * @param obj the ball to bounce off of
      */
-//    public void bounceOffBall(Ball obj) {
-//        //find the angle of collision
-//        double collisionAngle = Math.atan2(obj.getY() - this.getY(), obj.getX() - this.getX());
-//        //calculate each ball's angle of incidence from the angle of collision
-//        double thisIncidence = this.getDir() - collisionAngle;
-//        double objIncidence = obj.getDir() - collisionAngle;
-//        //calculate each ball's velocity components
-//        double thisComponent = this.getSpeed() * Math.cos(thisIncidence);
-//        double objComponent = obj.getSpeed() * Math.cos(objIncidence);
-//        double thisParallel = this.getSpeed() * Math.sin(thisIncidence);
-//        double objParallel = obj.getSpeed() * Math.sin(objIncidence);
-//        //calculate the momentum of each ball along the collision
-//        double thisMomentum = thisComponent * this.weight;
-//        double objMomentum = objComponent * obj.getWeight();
-//        //completely switch momentums; this is a perfectly elastic collision.
-//        double temp = objMomentum;
-//        objMomentum = thisMomentum;
-//        thisMomentum = temp;
-//        //convert back to velocity
-//        thisComponent = thisMomentum / this.weight;
-//        objComponent = objMomentum / obj.getWeight();
-//        //re-calculate the speed and direction
-//        double thisSpeed = Math.sqrt(MovingObject.square(thisComponent) + MovingObject.square(thisParallel));
-//        double thisDir = Math.atan2(thisComponent, thisParallel) - collisionAngle + Math.PI / 2;
-//        double objSpeed = Math.sqrt(MovingObject.square(objComponent) + MovingObject.square(objParallel, 2));
-//        double objDir = Math.atan2(objComponent, objParallel) - collisionAngle + Math.PI / 2;
-//        System.out.println(thisDir + " " + objDir);
-//        //finally, reassign the speed of each.
-//        this.setSpeedDir(thisSpeed, thisDir);
-//        obj.setSpeedDir(objSpeed, objDir);
-//        this.move();
-//        obj.move();
-//    }
+    public void bounceOffBall(Ball obj) {
+        System.out.println(obj.getDir());
+        MovingObject.haltProgram();
+        //find the angle of collision
+        double collisionAngle = Math.atan2(obj.getY() - this.getY(), obj.getX() - this.getX());
+        //calculate each ball's angle of incidence from the angle of collision
+        double thisIncidence = this.getDir() - collisionAngle;
+        double objIncidence = obj.getDir() - collisionAngle;
+        //calculate each ball's velocity components
+        double thisComponent = this.getSpeed() * Math.cos(thisIncidence);
+        double objComponent = obj.getSpeed() * Math.cos(objIncidence);
+        double thisParallel = this.getSpeed() * Math.sin(thisIncidence);
+        double objParallel = obj.getSpeed() * Math.sin(objIncidence);
+        //calculate the momentum of each ball along the collision
+        double thisMomentum = thisComponent * this.weight;
+        double objMomentum = objComponent * obj.getWeight();
+        //completely switch momentums; this is a perfectly elastic collision.
+        double temp = objMomentum;
+        objMomentum = thisMomentum;
+        thisMomentum = temp;
+        //convert back to velocity
+        thisComponent = thisMomentum / this.weight;
+        objComponent = objMomentum / obj.getWeight();
+        //re-calculate the speed and direction
+        double thisSpeed = Math.sqrt(MovingObject.square(thisComponent) + MovingObject.square(thisParallel));
+        double thisDir = Math.atan2(thisComponent, thisParallel) - collisionAngle + Math.PI / 2;
+        double objSpeed = Math.sqrt(MovingObject.square(objComponent) + MovingObject.square(objParallel));
+        double objDir = Math.atan2(objComponent, objParallel) - collisionAngle + Math.PI / 2;
+        System.out.println(thisDir + " " + objDir);
+        //finally, reassign the speed of each.
+        this.setSpeedDir(thisSpeed, thisDir);
+        obj.setSpeedDir(objSpeed, objDir);
+        this.move();
+        obj.move();
+    }
     /**
      * Bounce off a ball
      *
      * @param obj the ball to bounce off of
      */
-    public void bounceOffBall(Ball obj) {
-        //change the coordinate axes to reflect the direction of collision
-        
-        //adapted from https://gamedevelopment.tutsplus.com/tutorials/when-worlds-collide-simulating-circle-circle-collisions--gamedev-769
-        double combinedWeight = this.getWeight() + obj.getWeight();
-        double newVX1 = (this.getVX() * (this.getWeight() - obj.getWeight() + 2 * obj.getWeight() * obj.getVX())) / combinedWeight;
-        double newVY1 = (this.getVY() * (this.getWeight() - obj.getWeight() + 2 * obj.getWeight() * obj.getVY())) / combinedWeight;
-        double newVX2 = (obj.getVX() * (obj.getWeight() - this.getWeight() + 2 * this.getWeight() * this.getVX())) / combinedWeight;
-        double newVY2 = (obj.getVX() * (obj.getWeight() - this.getWeight() + 2 * this.getWeight() * this.getVX())) / combinedWeight;
-        
-        
-        this.setVX(newVX1);
-        this.setVY(newVY1);
-        obj.setVX(newVX2);
-        obj.setVY(newVY2);
-        this.move();
-        obj.move();
-
-    }
+//    public void bounceOffBall(Ball obj) {
+//        //change the coordinate axes to reflect the direction of collision
+//        double collisionAngle = Math.atan2(obj.getY() - this.getY(), obj.getX() - this.getX()); //angle of the normal
+//
+//        //adapted from https://gamedevelopment.tutsplus.com/tutorials/when-worlds-collide-simulating-circle-circle-collisions--gamedev-769
+//        double combinedWeight = this.getWeight() + obj.getWeight();
+//        double newVX1 = (this.getVX() * (this.getWeight() - obj.getWeight() + 2 * obj.getWeight() * obj.getVX())) / combinedWeight;
+//        double newVY1 = (this.getVY() * (this.getWeight() - obj.getWeight() + 2 * obj.getWeight() * obj.getVY())) / combinedWeight;
+//        double newVX2 = (obj.getVX() * (obj.getWeight() - this.getWeight() + 2 * this.getWeight() * this.getVX())) / combinedWeight;
+//        double newVY2 = (obj.getVX() * (obj.getWeight() - this.getWeight() + 2 * this.getWeight() * this.getVX())) / combinedWeight;
+//
+//        this.setVX(newVX1);
+//        this.setVY(newVY1);
+//        obj.setVX(newVX2);
+//        obj.setVY(newVY2);
+//        this.move();
+//        obj.move();
+//
+//    }
 
     /**
      * Draw the ball to a window

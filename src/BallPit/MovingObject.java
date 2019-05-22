@@ -65,7 +65,7 @@ public class MovingObject implements Moveable {
      * @return the direction in radians
      */
     public double getDir() {
-        return Math.atan(vy / vx);
+        return Math.atan2(vy, vx);
     }
 
     /**
@@ -139,5 +139,14 @@ public class MovingObject implements Moveable {
     
     public static double square(double a) { //faster than Math.pow
         return a * a;
+    }
+    
+    public static void haltProgram() {
+        try {
+            while (true) {
+                Thread.currentThread().sleep(10000);
+            }
+        } catch (Exception e) {
+        }
     }
 }

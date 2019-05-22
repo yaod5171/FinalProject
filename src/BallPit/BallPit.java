@@ -30,7 +30,7 @@ public class BallPit extends Canvas implements Runnable {
         makeBall(100, 200, 200, 100);
         makeBall(100, 300, 200, 200);
         makeBall(500, 100, 500, 500);
-        makeBall(500, 500, 500, 100);
+        //makeBall(500, 500, 500, 100);
 
         new Thread(this).start();
         setVisible(true);
