@@ -96,6 +96,8 @@ public class Ball extends MovingObject /*implements Collideable*/ {
         MovingObject.haltProgram();
         //find the angle of collision
         double collisionAngle = Math.atan2(obj.getY() - this.getY(), obj.getX() - this.getX());
+        System.out.println(collisionAngle);
+        MovingObject.haltProgram();
         //calculate each ball's angle of incidence from the angle of collision
         double thisIncidence = this.getDir() - collisionAngle;
         double objIncidence = obj.getDir() - collisionAngle;
