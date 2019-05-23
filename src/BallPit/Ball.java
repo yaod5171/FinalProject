@@ -26,7 +26,7 @@ public class Ball extends MovingObject /*implements Collideable*/ {
     }
 
     public Ball(double x, double y, int size, int weight, Color color) {
-        super(x, y, 0, 0);
+        super(x, y);
         this.size = size;
         this.weight = weight;
         this.color = color;
@@ -48,9 +48,9 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      * @param weight the weight of the ball
      * @return a color scaled to the density of the ball
      */
-    private static Color colorByDensity(int size, int weight) {
+    static Color colorByDensity(int size, int weight) {
         double densityTop = 5;
-        double density = (double) weight / MovingObject.square(size);
+        double density = (double) weight / Tools.square(size);
         float hue;
         if (density < densityTop) {
             hue = (float) (density / densityTop);
@@ -73,7 +73,7 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      * @return true if point is inside or on ball
      */
     public boolean pointCollide(int x, int y) {
-        return (MovingObject.square(x - this.xPos) + MovingObject.square(y - this.yPos) <= MovingObject.square(size));
+        return (Tools.square(x - this.xPos) + Tools.square(y - this.yPos) <= Tools.square(size));
     }
 
     /**
@@ -83,7 +83,7 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      * @return true if the balls have collided
      */
     public boolean collideWithBall(Ball obj) {
-        return (sqDist(obj.getX(), obj.getY()) <= MovingObject.square(size + obj.getSize()));
+        return (sqDist(obj.getX(), obj.getY()) <= Tools.square(size + obj.getSize()));
     }
 
     /**
@@ -93,11 +93,11 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      */
     public void bounceOffBall(Ball obj) {
         System.out.println(obj.getDir());
-        MovingObject.haltProgram();
+        Tools.haltProgram();
         //find the angle of collision
         double collisionAngle = Math.atan2(obj.getY() - this.getY(), obj.getX() - this.getX());
         System.out.println(collisionAngle);
-        MovingObject.haltProgram();
+        Tools.haltProgram();
         //calculate each ball's angle of incidence from the angle of collision
         double thisIncidence = this.getDir() - collisionAngle;
         double objIncidence = obj.getDir() - collisionAngle;
@@ -117,9 +117,9 @@ public class Ball extends MovingObject /*implements Collideable*/ {
         thisComponent = thisMomentum / this.weight;
         objComponent = objMomentum / obj.getWeight();
         //re-calculate the speed and direction
-        double thisSpeed = Math.sqrt(MovingObject.square(thisComponent) + MovingObject.square(thisParallel));
+        double thisSpeed = Math.sqrt(Tools.square(thisComponent) + Tools.square(thisParallel));
         double thisDir = Math.atan2(thisComponent, thisParallel) - collisionAngle + Math.PI / 2;
-        double objSpeed = Math.sqrt(MovingObject.square(objComponent) + MovingObject.square(objParallel));
+        double objSpeed = Math.sqrt(Tools.square(objComponent) + Tools.square(objParallel));
         double objDir = Math.atan2(objComponent, objParallel) - collisionAngle + Math.PI / 2;
         System.out.println(thisDir + " " + objDir);
         //finally, reassign the speed of each.

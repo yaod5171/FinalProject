@@ -4,36 +4,13 @@ package BallPit;
  *
  * @author yaod5171
  */
-public class MovingObject implements Moveable {
+public abstract class MovingObject extends PhysicsObject implements Moveable {
 
-    private double x;
-    private double y;
     private double vx;
     private double vy;
-    protected int xPos; //this is basically the output, so :P
-    protected int yPos;
 
     public MovingObject(double x, double y) {
-        this(x, y, 0, 0);
-    }
-
-    public MovingObject(double x, double y, double vx, double vy) {
-        this.x = x;
-        this.y = y;
-    }
-
-    /**
-     * @return the x
-     */
-    public double getX() {
-        return x;
-    }
-
-    /**
-     * @return the y
-     */
-    public double getY() {
-        return y;
+        super(x, y);
     }
 
     /**
@@ -67,21 +44,7 @@ public class MovingObject implements Moveable {
     public double getDir() {
         return Math.atan2(vy, vx);
     }
-
-    /**
-     * @param x the x to set
-     */
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    /**
-     * @param y the y to set
-     */
-    public void setY(double y) {
-        this.y = y;
-    }
-
+    
     /**
      * @param vx the vx to set
      */
@@ -110,43 +73,22 @@ public class MovingObject implements Moveable {
     /**
      * Update xPos and yPos
      */
-    public void updatePos() {
-        xPos = (int) x;
-        yPos = (int) y;
-    }
 
     /**
      * Move the object
      */
     public void move() {
-        x += vx;
-        y += vy;
+        setX(getX() + vx);
+        setY(getY() + vy);
         updatePos();
     }
 
     public double sqDist(double x, double y) {
-        return Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2);
+        return Math.pow(getX() - x, 2) + Math.pow(getY() - y, 2);
     }
 
     public double dist(double x, double y) {
         return Math.sqrt(sqDist(x, y));
     }
     
-    /**
-     * End object methods
-     * Begin helper methods
-     */
-    
-    public static double square(double a) { //faster than Math.pow
-        return a * a;
-    }
-    
-    public static void haltProgram() {
-        try {
-            while (true) {
-                Thread.currentThread().sleep(10000);
-            }
-        } catch (Exception e) {
-        }
-    }
 }

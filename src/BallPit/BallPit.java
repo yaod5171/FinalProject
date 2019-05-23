@@ -47,7 +47,7 @@ public class BallPit extends Canvas implements Runnable {
     public void makeBall(int x1, int y1, int x2, int y2) {
         final double SCALE = 0.025;
 
-        Ball newBall = new Ball(x1, y1, size, (int) (MovingObject.square(size) * density));
+        Ball newBall = new Ball(x1, y1, size, (int) (Tools.square(size) * density));
         int dx = x2 - x1;
         int dy = y2 - y1;
 
