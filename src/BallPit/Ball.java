@@ -92,20 +92,16 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      * @param obj the ball to bounce off of
      */
     public void bounceOffBall(Ball obj) {
-        System.out.println(obj.getDir());
-        Tools.haltProgram();
         //find the angle of collision
-        double collisionAngle = Math.atan2(obj.getY() - this.getY(), obj.getX() - this.getX());
-        System.out.println(collisionAngle);
-        Tools.haltProgram();
+        double collisionAngle = Math.atan2(obj.getY() - this.getY(), obj.getX() - this.getX()) - Math.PI/2;
         //calculate each ball's angle of incidence from the angle of collision
         double thisIncidence = this.getDir() - collisionAngle;
         double objIncidence = obj.getDir() - collisionAngle;
         //calculate each ball's velocity components
-        double thisComponent = this.getSpeed() * Math.cos(thisIncidence);
-        double objComponent = obj.getSpeed() * Math.cos(objIncidence);
-        double thisParallel = this.getSpeed() * Math.sin(thisIncidence);
-        double objParallel = obj.getSpeed() * Math.sin(objIncidence);
+        double thisComponent = this.getSpeed() * Math.sin(thisIncidence);
+        double objComponent = obj.getSpeed() * Math.sin(objIncidence);
+        double thisParallel = this.getSpeed() * Math.cos(thisIncidence);
+        double objParallel = obj.getSpeed() * Math.cos(objIncidence);
         //calculate the momentum of each ball along the collision
         double thisMomentum = thisComponent * this.weight;
         double objMomentum = objComponent * obj.getWeight();
@@ -118,9 +114,9 @@ public class Ball extends MovingObject /*implements Collideable*/ {
         objComponent = objMomentum / obj.getWeight();
         //re-calculate the speed and direction
         double thisSpeed = Math.sqrt(Tools.square(thisComponent) + Tools.square(thisParallel));
-        double thisDir = Math.atan2(thisComponent, thisParallel) - collisionAngle + Math.PI / 2;
+        double thisDir = Math.atan2(thisComponent, thisParallel) + collisionAngle;
         double objSpeed = Math.sqrt(Tools.square(objComponent) + Tools.square(objParallel));
-        double objDir = Math.atan2(objComponent, objParallel) - collisionAngle + Math.PI / 2;
+        double objDir = Math.atan2(objComponent, objParallel) + collisionAngle;
         System.out.println(thisDir + " " + objDir);
         //finally, reassign the speed of each.
         this.setSpeedDir(thisSpeed, thisDir);

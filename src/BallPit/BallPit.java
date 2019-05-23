@@ -24,13 +24,19 @@ public class BallPit extends Canvas implements Runnable {
         density = 1.0;
 
         balls = new Balls();
-        balls.addBall(new Ball(200, 200, 15, 225));
-        balls.addBall(new Ball(100, 100));
-        balls.addBall(new Ball(200, 100));
-        makeBall(100, 200, 200, 100);
-        makeBall(100, 300, 200, 200);
-        makeBall(500, 100, 500, 500);
-        //makeBall(500, 500, 500, 100);
+        
+//        balls.addBall(new Ball(200, 220, 15, 225));
+//        balls.addBall(new Ball(100, 100));
+//        balls.addBall(new Ball(200, 100));
+//        makeBall(100, 200, 200, 100);
+//        makeBall(300, 300, 200, 200);
+//        makeBall(500, 100, 500, 500);
+//        makeBall(520, 500, 520, 100);
+        
+        for (int i = 100; i <= 400; i+=50) {
+            makeBall(i, 100, i, 100);
+        }
+        makeBall(500, 125, 400, 100);
 
         new Thread(this).start();
         setVisible(true);
@@ -97,7 +103,7 @@ public class BallPit extends Canvas implements Runnable {
     public void run() {
         try {
             while (true) {
-                Thread.currentThread().sleep(100);
+                Thread.currentThread().sleep(10);
                 repaint();
             }
         } catch (Exception e) {
