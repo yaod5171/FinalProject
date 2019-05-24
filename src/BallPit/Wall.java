@@ -24,7 +24,23 @@ public class Wall extends PhysicsObject {
     
     public void draw(Graphics window) {
         window.setColor(Color.GRAY);
-        window.fillRect(xPos, yPos, width, height);
+        window.fillRect(xPos, yPos, getWidth(), getHeight());
     }
+
+    /**
+     * @return the width
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+     * @return the height
+     */
+    public int getHeight() {
+        return height;
+    }
+    
+    
 
 }
