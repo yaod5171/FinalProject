@@ -146,6 +146,14 @@ public class Ball extends MovingObject /*implements Collideable*/ {
             //finally, reassign the speed of each.
             this.setSpeedDir(thisSpeed, thisDir);
             obj.setSpeedDir(objSpeed, objDir);
+//            //oh, and move them out of the way so they don't get stuck to each other.
+//            double[] collisionPoint = {(this.getX()*this.size+obj.getX()*obj.getSize())/(size+obj.getSize()),
+//                (this.getY()*this.size+obj.getY()*obj.getSize())/(size+obj.getSize())};
+//            obj.setX(-Math.cos(collisionAngle)*obj.getSize() + collisionPoint[0]);
+//            obj.setY(-Math.sin(collisionAngle)*obj.getSize() + collisionPoint[1]);
+//            this.setX(Math.cos(collisionAngle)*this.getSize() + collisionPoint[0]);
+//            this.setX(Math.sin(collisionAngle)*this.getSize() + collisionPoint[1]);
+//            
 //            this.move();
 //            obj.move();
         }
@@ -155,7 +163,6 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      * Bounce the ball off a wall if they've collided.
      *
      * @param obj the wall to check
-     * @return true if the ball has collided with the wall
      */
     public void collideWithWall(Wall obj) {
         double wx = obj.getX();

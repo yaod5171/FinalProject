@@ -39,12 +39,19 @@ public class BallPit extends Canvas implements Runnable {
         walls.add(new Wall(0, 500, 800, 20));
         walls.add(new Wall(700, 0, 20, 600));
         walls.add(new Wall(0, 0, 800, 20));
+//        
+//        for (int i = 100; i <= 400; i+=50) {
+//            makeBall(i, 100, i, 100);
+//        }
+//        makeBall(500, 125, 400, 100);
+//        balls.get(4).setWeight(Integer.MAX_VALUE); //note: balls of infinite mass behave poorly.
         
-        for (int i = 100; i <= 400; i+=50) {
-            makeBall(i, 100, i, 100);
+        for (int i = 400; i < 700; i += 50) {
+            for (int j = 100; j < 300; j += 50) {
+                makeBall(i, j, i, j);
+            }
         }
-        makeBall(500, 125, 400, 100);
-        //balls.get(4).setWeight(Integer.MAX_VALUE); //note: balls of infinite mass behave poorly.
+        makeBall(100, 300, 110, 300);
 
         new Thread(this).start();
         setVisible(true);
