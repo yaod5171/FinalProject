@@ -24,23 +24,19 @@ public class Balls {
         }
     }
 
-    public void addBall(Ball ball) {
+    public void add(Ball ball) {
         balls.add(ball);
     }
 
-    public void removeBall(Ball ball) {
+    public void remove(Ball ball) {
         balls.remove(ball);
     }
 
     public List<Ball> getBalls() {
         return balls;
     }
-
-    public Ball get(int ind) {
-        return getBall(ind);
-    }
     
-    public Ball getBall(int ind) {
+    public Ball get(int ind) {
         return balls.get(ind);
     }
 
@@ -56,10 +52,13 @@ public class Balls {
         }
     }
 
-    public void checkAllForCollisions() {
+    public void checkAllForCollisions(Walls walls) {
         for (int i = 0; i < balls.size(); i++) {
             for (int j = i + 1; j < balls.size(); j++) { //make sure we don't collide twice
                 balls.get(i).collideWithBall(balls.get(j));
+            }
+            for (Wall w: walls.getWalls()) {
+                balls.get(i).collideWithWall(w);
             }
         }
     }

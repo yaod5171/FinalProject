@@ -15,6 +15,7 @@ public class BallPit extends Canvas implements Runnable {
     private BufferedImage back;
 
     private Balls balls;
+    private Walls walls;
 
     private int size;
     private double density;
@@ -24,6 +25,7 @@ public class BallPit extends Canvas implements Runnable {
         density = 1.0;
 
         balls = new Balls();
+        walls = new Walls();
         
 //        balls.addBall(new Ball(200, 220, 15, 225));
 //        balls.addBall(new Ball(100, 100));
@@ -33,10 +35,16 @@ public class BallPit extends Canvas implements Runnable {
 //        makeBall(500, 100, 500, 500);
 //        makeBall(520, 500, 520, 100);
         
+        walls.add(new Wall(0, 0, 20, 600));
+        walls.add(new Wall(0, 500, 800, 20));
+        walls.add(new Wall(700, 0, 20, 600));
+        walls.add(new Wall(0, 0, 800, 20));
+        
         for (int i = 100; i <= 400; i+=50) {
             makeBall(i, 100, i, 100);
         }
         makeBall(500, 125, 400, 100);
+        //balls.get(4).setWeight(Integer.MAX_VALUE); //note: balls of infinite mass behave poorly.
 
         new Thread(this).start();
         setVisible(true);
@@ -60,14 +68,14 @@ public class BallPit extends Canvas implements Runnable {
         newBall.setVX(SCALE * dx);
         newBall.setVY(SCALE * dy);
 
-        balls.addBall(newBall);
+        balls.add(newBall);
     }
 
     @Override
     public void update(Graphics window) {
         balls.addGravity();
         balls.moveAll();
-        balls.checkAllForCollisions();
+        balls.checkAllForCollisions(walls);
 
         paint(window);
     }
@@ -93,8 +101,9 @@ public class BallPit extends Canvas implements Runnable {
         graphToBack.setColor(Color.WHITE);
         graphToBack.fillRect(0, 0, 800, 600);
 
-        //draw the balls
+        //draw the objects
         balls.drawAll(graphToBack);
+        walls.drawAll(graphToBack);
 
         twoDGraph.drawImage(back, null, 0, 0);
     }
@@ -103,7 +112,7 @@ public class BallPit extends Canvas implements Runnable {
     public void run() {
         try {
             while (true) {
-                Thread.currentThread().sleep(10);
+                Thread.currentThread().sleep(5);
                 repaint();
             }
         } catch (Exception e) {

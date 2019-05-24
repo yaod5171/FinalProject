@@ -25,6 +25,7 @@ public abstract class PhysicsObject {
     public PhysicsObject(double x, double y) {
         this.x = x;
         this.y = y;
+        updatePos();
     }
 
     /**

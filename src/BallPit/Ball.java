@@ -33,12 +33,46 @@ public class Ball extends MovingObject /*implements Collideable*/ {
         updatePos();
     }
 
+    /**
+     * @return the size
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     * @return the weight
+     */
     public int getWeight() {
         return weight;
+    }
+
+    /**
+     * @return the color
+     */
+    public Color getColor() {
+        return color;
+    }
+
+    /**
+     * @param size the size to set
+     */
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    /**
+     * @param weight the weight to set
+     */
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    /**
+     * @param color the color to set
+     */
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     /**
@@ -73,7 +107,7 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      * @return true if point is inside or on ball
      */
     public boolean pointCollide(int x, int y) {
-        return (Tools.square(x - this.xPos) + Tools.square(y - this.yPos) <= Tools.square(size));
+        return (Tools.square(x - this.xPos) + Tools.square(y - this.yPos) <= Tools.square(getSize()));
     }
 
     /**
@@ -82,7 +116,7 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      * @param obj the other ball to check
      */
     public void collideWithBall(Ball obj) {
-        if (sqDist(obj.getX(), obj.getY()) <= Tools.square(size + obj.getSize())) {
+        if (sqDist(obj.getX(), obj.getY()) <= Tools.square(getSize() + obj.getSize())) {
             //find the angle of collision
             double collisionAngle = Math.atan2(obj.getY() - this.getY(), obj.getX() - this.getX()) - Math.PI / 2;
             //calculate each ball's angle of incidence from the angle of collision
@@ -94,14 +128,14 @@ public class Ball extends MovingObject /*implements Collideable*/ {
             double thisParallel = this.getSpeed() * Math.cos(thisIncidence);
             double objParallel = obj.getSpeed() * Math.cos(objIncidence);
             //calculate the momentum of each ball along the collision
-            double thisMomentum = thisComponent * this.weight;
+            double thisMomentum = thisComponent * this.getWeight();
             double objMomentum = objComponent * obj.getWeight();
             //completely switch momentums; this is a perfectly elastic collision.
             double temp = objMomentum;
             objMomentum = thisMomentum;
             thisMomentum = temp;
             //convert back to velocity
-            thisComponent = thisMomentum / this.weight;
+            thisComponent = thisMomentum / this.getWeight();
             objComponent = objMomentum / obj.getWeight();
             //re-calculate the speed and direction
             double thisSpeed = Math.sqrt(Tools.square(thisComponent) + Tools.square(thisParallel));
@@ -112,11 +146,10 @@ public class Ball extends MovingObject /*implements Collideable*/ {
             //finally, reassign the speed of each.
             this.setSpeedDir(thisSpeed, thisDir);
             obj.setSpeedDir(objSpeed, objDir);
-            this.move();
-            obj.move();
+//            this.move();
+//            obj.move();
         }
     }
-
 
     /**
      * Bounce the ball off a wall if they've collided.
@@ -124,37 +157,62 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      * @param obj the wall to check
      * @return true if the ball has collided with the wall
      */
-    public boolean collideWithWall(Wall obj) {
+    public void collideWithWall(Wall obj) {
         double wx = obj.getX();
         double wy = obj.getY();
         int wid = obj.getWidth();
         int ht = obj.getHeight();
 
+        int bounceMode = 0;
+        double[] bouncePoint = new double[2];
+
         //is a collision possible? if not, don't run the other tests.
-        if (wx < getX() + size && getX() - size < wx + wid
-                && wy < getY() + size && getY() - size < wy + ht) {
+        if (wx < getX() + getSize() && getX() - getSize() < wx + wid
+                && wy < getY() + getSize() && getY() - getSize() < wy + ht) {
 
             //left and right sides
             if (wy < getY() && getY() < wy + ht) {
-                if (wx < getX() + size && getX() - size < wx + wid) {
-                    return true;
+                if (wx < getX() + getSize() && getX() - getSize() < wx + wid) {
+                    bounceMode = 1;
                 }
             }
             //top and bottom sides
             if (wx < getX() && getX() < wx + wid) {
-                if (wy < getY() + size && getY() - size < wy + ht) {
-                    return true;
+                if (wy < getY() + getSize() && getY() - getSize() < wy + ht) {
+                    bounceMode = 2;
                 }
             }
             //corners
             double[][] points = {{wx, wy}, {wx + wid, wy}, {wx, wy + ht}, {wx + wid, wy + ht}};
             for (double[] point : points) {
-                if (sqDist(point[0], point[1]) < Tools.square(size)) {
-                    return true;
+                if (sqDist(point[0], point[1]) < Tools.square(getSize())) {
+                    bounceMode = 3;
+                    bouncePoint = point;
                 }
             }
+
+            //if a bounce has occured:
+            if (bounceMode == 0) {
+                //do nothing; no collision has occured.
+            } else if (bounceMode == 1) {
+                setVX(-getVX());
+                if (getX() < wx) {
+                    setX(wx - size);
+                } else {
+                    setX(wx + wid + size);
+                }
+            } else if (bounceMode == 2) {
+                setVY(-getVY());
+                if (getY() < wy) {
+                    setY(wy - size);
+                } else {
+                    setY(wy + ht + size);
+                }
+            } else if (bounceMode == 3) {
+                setVX(-getVX());
+                setVY(-getVY());
+            }
         }
-        return false;
     }
 
     /**
@@ -173,10 +231,10 @@ public class Ball extends MovingObject /*implements Collideable*/ {
      * @param window the window to draw to
      */
     public void draw(Graphics window) {
-        window.setColor(color);
-        window.fillOval(xPos - size, yPos - size, 2 * size, 2 * size);
+        window.setColor(getColor());
+        window.fillOval(xPos - getSize(), yPos - getSize(), 2 * getSize(), 2 * getSize());
         window.setColor(Color.BLACK);
-        window.drawLine(xPos, yPos, xPos + (int) (10 * getSpeed() * Math.cos(getDir())), yPos + (int) (10 * getSpeed() * Math.sin(getDir())));
+        //window.drawLine(xPos, yPos, xPos + (int) (10 * getSpeed() * Math.cos(getDir())), yPos + (int) (10 * getSpeed() * Math.sin(getDir())));
     }
 
 }

@@ -5,6 +5,7 @@
  */
 package BallPit;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +29,30 @@ public class Walls {
     }
 
     public Wall get(int ind) {
-        return getWall(ind);
-    }
-
-    public Wall getWall(int ind) {
         return walls.get(ind);
     }
+
+    public void add(Wall wall) {
+        walls.add(wall);
+    }
+
+    public void remove(Wall wall) {
+        walls.remove(wall);
+    }
+
+    public void remove(int ind) {
+        walls.remove(ind);
+    }
+    
+    public List<Wall> getWalls() {
+        return walls;
+    }
+    
+    public void drawAll(Graphics window) {
+        for (Wall w : walls) {
+            w.draw(window);
+        }
+    }
+
 
 }
