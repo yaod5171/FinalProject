@@ -142,7 +142,6 @@ public class Ball extends MovingObject /*implements Collideable*/ {
             double thisDir = Math.atan2(thisComponent, thisParallel) + collisionAngle;
             double objSpeed = Math.sqrt(Tools.square(objComponent) + Tools.square(objParallel));
             double objDir = Math.atan2(objComponent, objParallel) + collisionAngle;
-            System.out.println(thisDir + " " + objDir);
             //finally, reassign the speed of each.
             this.setSpeedDir(thisSpeed, thisDir);
             obj.setSpeedDir(objSpeed, objDir);

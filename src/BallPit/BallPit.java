@@ -4,13 +4,17 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.MouseInfo;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 /**
  *
  * @author yaod5171
  */
-public class BallPit extends Canvas implements Runnable {
+public class BallPit extends Canvas implements Runnable, MouseListener, MouseMotionListener {
 
     private BufferedImage back;
 
@@ -20,13 +24,21 @@ public class BallPit extends Canvas implements Runnable {
     private int size;
     private double density;
 
+    private int[] clickAndDragStart;
+    private int[] mousePos;
+    private boolean mouseHeld;
+
     public BallPit() {
         size = 15;
         density = 1.0;
 
         balls = new Balls();
         walls = new Walls();
-        
+
+        clickAndDragStart = new int[2];
+        mousePos = new int[]{200, 200};
+        mouseHeld = false;
+
 //        balls.addBall(new Ball(200, 220, 15, 225));
 //        balls.addBall(new Ball(100, 100));
 //        balls.addBall(new Ball(200, 100));
@@ -34,7 +46,6 @@ public class BallPit extends Canvas implements Runnable {
 //        makeBall(300, 300, 200, 200);
 //        makeBall(500, 100, 500, 500);
 //        makeBall(520, 500, 520, 100);
-        
         walls.add(new Wall(0, 0, 20, 600));
         walls.add(new Wall(0, 500, 800, 20));
         walls.add(new Wall(700, 0, 20, 600));
@@ -45,15 +56,16 @@ public class BallPit extends Canvas implements Runnable {
 //        }
 //        makeBall(500, 125, 400, 100);
 //        balls.get(4).setWeight(Integer.MAX_VALUE); //note: balls of infinite mass behave poorly.
-        
-        for (int i = 400; i < 700; i += 50) {
-            for (int j = 100; j < 300; j += 50) {
-                makeBall(i, j, i, j);
-            }
-        }
-        makeBall(100, 300, 110, 300);
 
+//        for (int i = 400; i < 700; i += 50) {
+//            for (int j = 100; j < 300; j += 50) {
+//                makeBall(i, j, i, j);
+//            }
+//        }
+//        makeBall(100, 300, 110, 300);
         new Thread(this).start();
+        addMouseListener(this);
+        //addMouseMotionListener(this);
         setVisible(true);
     }
 
@@ -83,7 +95,9 @@ public class BallPit extends Canvas implements Runnable {
         balls.addGravity();
         balls.moveAll();
         balls.checkAllForCollisions(walls);
-
+        
+        mousePos = new int[]{MouseInfo.getPointerInfo().getLocation().x, 
+            MouseInfo.getPointerInfo().getLocation().y};
         paint(window);
     }
 
@@ -112,6 +126,12 @@ public class BallPit extends Canvas implements Runnable {
         balls.drawAll(graphToBack);
         walls.drawAll(graphToBack);
 
+        //draw line from click and drag;
+        if (mouseHeld) {
+            graphToBack.drawLine(clickAndDragStart[0], clickAndDragStart[1],
+                    mousePos[0], mousePos[1]);
+        }
+
         twoDGraph.drawImage(back, null, 0, 0);
     }
 
@@ -124,6 +144,39 @@ public class BallPit extends Canvas implements Runnable {
             }
         } catch (Exception e) {
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        clickAndDragStart = new int[]{e.getX(), e.getY()};
+        mouseHeld = true;
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        mousePos = new int[]{e.getX(), e.getY()};
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        makeBall(clickAndDragStart[0], clickAndDragStart[1], e.getX(), e.getY());
+        mouseHeld = false;
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
     }
 
 }
