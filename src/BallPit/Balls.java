@@ -35,7 +35,7 @@ public class Balls {
     public void remove(Ball ball) {
         balls.remove(ball);
     }
-    
+
     public void remove(int ind) {
         balls.remove(ind);
     }
@@ -44,15 +44,15 @@ public class Balls {
         return balls;
     }
 
-    public void moveAll() {
-        for (Ball b : balls) {
-            b.move();
-        }
-    }
-
     public void drawAll(Graphics window) {
         for (Ball b : balls) {
             b.draw(window);
+        }
+    }
+
+    public void moveAll() {
+        for (Ball b : balls) {
+            b.move();
         }
     }
 
