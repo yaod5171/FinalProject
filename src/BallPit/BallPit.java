@@ -4,17 +4,19 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.MouseInfo;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.lang.Character;
 
 /**
  *
  * @author yaod5171
  */
-public class BallPit extends Canvas implements Runnable, MouseListener, MouseMotionListener {
+public class BallPit extends Canvas implements Runnable, MouseListener, MouseMotionListener, KeyListener {
 
     private BufferedImage back;
 
@@ -28,6 +30,9 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
     private int[] mousePos;
     private boolean mouseHeld;
 
+    private boolean intro;
+    private boolean paused;
+
     public BallPit() {
         size = 15;
         density = 1.0;
@@ -39,6 +44,11 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
         mousePos = new int[]{200, 200};
         mouseHeld = false;
 
+        intro = true;
+        paused = false;
+
+        defaultWalls();
+
 //        balls.addBall(new Ball(200, 220, 15, 225));
 //        balls.addBall(new Ball(100, 100));
 //        balls.addBall(new Ball(200, 100));
@@ -46,17 +56,12 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
 //        makeBall(300, 300, 200, 200);
 //        makeBall(500, 100, 500, 500);
 //        makeBall(520, 500, 520, 100);
-        walls.add(new Wall(20, 20, 30, 480));
-        walls.add(new Wall(20, 500, 750, 30));
-        walls.add(new Wall(740, 20, 30, 480));
-        walls.add(new Wall(20, 20, 750, 30));
 //        
 //        for (int i = 100; i <= 400; i+=50) {
 //            makeBall(i, 100, i, 100);
 //        }
 //        makeBall(500, 125, 400, 100);
 //        balls.get(4).setWeight(Integer.MAX_VALUE); //note: balls of infinite mass behave poorly.
-
 //        for (int i = 400; i < 700; i += 50) {
 //            for (int j = 100; j < 300; j += 50) {
 //                makeBall(i, j, i, j);
@@ -65,8 +70,16 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
 //        makeBall(100, 300, 110, 300);
         new Thread(this).start();
         addMouseListener(this);
-        //addMouseMotionListener(this);
+        addKeyListener(this);
+        addMouseMotionListener(this);
         setVisible(true);
+    }
+
+    private void defaultWalls() {
+        walls.add(new Wall(20, 20, 30, 480));
+        walls.add(new Wall(20, 500, 750, 30));
+        walls.add(new Wall(740, 20, 30, 480));
+        walls.add(new Wall(20, 20, 750, 30));
     }
 
     /**
@@ -92,12 +105,11 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
 
     @Override
     public void update(Graphics window) {
-        balls.addGravity();
-        balls.moveAll();
-        balls.checkAllForCollisions(walls);
-        
-        mousePos = new int[]{MouseInfo.getPointerInfo().getLocation().x, 
-            MouseInfo.getPointerInfo().getLocation().y};
+        if (!paused) {
+            balls.addGravity();
+            balls.moveAll();
+            balls.checkAllForCollisions(walls);
+        }
         paint(window);
     }
 
@@ -127,11 +139,30 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
         walls.drawAll(graphToBack);
 
         //draw line from click and drag;
-        if (mouseHeld) {
+        if (mouseHeld && !paused) {
             graphToBack.drawLine(clickAndDragStart[0], clickAndDragStart[1],
                     mousePos[0], mousePos[1]);
         }
-        
+
+        //draw intro
+        if (intro) {
+            graphToBack.setColor(Color.RED);
+            //graphToBack.setFont
+            graphToBack.drawString("Ball Pit", 350, 100);
+            graphToBack.drawString("by Derrick Yao", 330, 120);
+            graphToBack.drawString("Left click and drag to create a ball.", 60, 480);
+            graphToBack.drawString("Press SPACE to pause.", 600, 480);
+        }
+
+        //draw paused menu
+        if (paused) {
+            graphToBack.setColor(Color.RED);
+            graphToBack.drawString("PAUSED", 350, 100);
+            graphToBack.drawString("Press SPACE to unpause.", 310, 120);
+            graphToBack.drawString("Press S to save", 60, 550);
+            graphToBack.drawString("Press O to open a file", 325, 550);
+            graphToBack.drawString("Press R to reset", 600, 550);
+        }
 
         twoDGraph.drawImage(back, null, 0, 0);
     }
@@ -149,12 +180,15 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        //do nothing
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         clickAndDragStart = new int[]{e.getX(), e.getY()};
+        mousePos = new int[]{e.getX(), e.getY()};
         mouseHeld = true;
+        intro = false;
     }
 
     @Override
@@ -164,20 +198,51 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        makeBall(clickAndDragStart[0], clickAndDragStart[1], e.getX(), e.getY());
+        if (!paused) {
+            makeBall(clickAndDragStart[0], clickAndDragStart[1], e.getX(), e.getY());
+        }
         mouseHeld = false;
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        //do nothing
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
+        //do nothing. probably.
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        //do nothing
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        //do nothing
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        //do nothing
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        switch (Character.toUpperCase(e.getKeyChar())) {
+            case ' ':
+                paused = !paused;
+                break;
+            case 'S':
+                break;
+            case 'O':
+                break;
+            case 'R':
+
+        }
+        intro = false;
     }
 
 }
