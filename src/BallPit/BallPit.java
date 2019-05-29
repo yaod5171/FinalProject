@@ -46,10 +46,10 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
 //        makeBall(300, 300, 200, 200);
 //        makeBall(500, 100, 500, 500);
 //        makeBall(520, 500, 520, 100);
-        walls.add(new Wall(0, 0, 20, 600));
-        walls.add(new Wall(0, 500, 800, 20));
-        walls.add(new Wall(700, 0, 20, 600));
-        walls.add(new Wall(0, 0, 800, 20));
+        walls.add(new Wall(20, 20, 30, 480));
+        walls.add(new Wall(20, 500, 750, 30));
+        walls.add(new Wall(740, 20, 30, 480));
+        walls.add(new Wall(20, 20, 750, 30));
 //        
 //        for (int i = 100; i <= 400; i+=50) {
 //            makeBall(i, 100, i, 100);
@@ -131,6 +131,7 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
             graphToBack.drawLine(clickAndDragStart[0], clickAndDragStart[1],
                     mousePos[0], mousePos[1]);
         }
+        
 
         twoDGraph.drawImage(back, null, 0, 0);
     }

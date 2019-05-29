@@ -8,6 +8,8 @@ import java.awt.Graphics;
  * @author yaod5171
  */
 public class Ball extends MovingObject /*implements Collideable*/ {
+    
+    public static final double BALL_DAMPENING = 0.98;
 
     private int size;
     private int weight;
@@ -143,21 +145,27 @@ public class Ball extends MovingObject /*implements Collideable*/ {
             double objSpeed = Math.sqrt(Tools.square(objComponent) + Tools.square(objParallel));
             double objDir = Math.atan2(objComponent, objParallel) + collisionAngle;
             //finally, reassign the speed of each.
-            this.setSpeedDir(thisSpeed, thisDir);
-            obj.setSpeedDir(objSpeed, objDir);
-//            //oh, and move them out of the way so they don't get stuck to each other.
-//            double[] collisionPoint = {(this.getX()*this.size+obj.getX()*obj.getSize())/(size+obj.getSize()),
-//                (this.getY()*this.size+obj.getY()*obj.getSize())/(size+obj.getSize())};
-//            obj.setX(-Math.cos(collisionAngle)*obj.getSize() + collisionPoint[0]);
-//            obj.setY(-Math.sin(collisionAngle)*obj.getSize() + collisionPoint[1]);
-//            this.setX(Math.cos(collisionAngle)*this.getSize() + collisionPoint[0]);
-//            this.setX(Math.sin(collisionAngle)*this.getSize() + collisionPoint[1]);
-//            
+            this.setSpeedDir(thisSpeed * BALL_DAMPENING, thisDir);
+            obj.setSpeedDir(objSpeed * BALL_DAMPENING, objDir);
+            //oh, and move them out of the way so they don't get stuck to each other.
+            double[] collisionPoint = {(this.getX()*this.size+obj.getX()*obj.getSize())/(size+obj.getSize()),
+                (this.getY()*this.size+obj.getY()*obj.getSize())/(size+obj.getSize())};
+            collis = collisionPoint;
+            obj.setX(Math.cos(collisionAngle + Math.PI/2)*obj.getSize() + collisionPoint[0]);
+            obj.setY(Math.sin(collisionAngle + Math.PI/2)*obj.getSize() + collisionPoint[1]);
+            this.setX(-Math.cos(collisionAngle + Math.PI/2)*this.getSize() + collisionPoint[0]);
+            this.setY(-Math.sin(collisionAngle + Math.PI/2)*this.getSize() + collisionPoint[1]);
+            
 //            this.move();
 //            obj.move();
         }
     }
-
+    
+    public static double[] collis = new double[]{0,0};
+    public static void drawCollis(Graphics window) {
+        window.drawOval((int)collis[0], (int)collis[1], 5, 5);
+    }
+    
     /**
      * Bounce the ball off a wall if they've collided.
      *
@@ -219,16 +227,6 @@ public class Ball extends MovingObject /*implements Collideable*/ {
                 setVY(-getVY());
             }
         }
-    }
-
-    /**
-     * Bounce off a wall.
-     *
-     * @param obj the wall to bounce off of
-     */
-    public void bounceOffWall(Wall obj) {
-        //corner bounce or side bounce?
-
     }
 
     /**
