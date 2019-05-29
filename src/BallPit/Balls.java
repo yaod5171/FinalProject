@@ -24,6 +24,10 @@ public class Balls {
         }
     }
 
+    public Ball get(int ind) {
+        return balls.get(ind);
+    }
+
     public void add(Ball ball) {
         balls.add(ball);
     }
@@ -31,13 +35,13 @@ public class Balls {
     public void remove(Ball ball) {
         balls.remove(ball);
     }
+    
+    public void remove(int ind) {
+        balls.remove(ind);
+    }
 
     public List<Ball> getBalls() {
         return balls;
-    }
-    
-    public Ball get(int ind) {
-        return balls.get(ind);
     }
 
     public void moveAll() {
@@ -57,7 +61,7 @@ public class Balls {
             for (int j = i + 1; j < balls.size(); j++) { //make sure we don't collide twice
                 balls.get(i).collideWithBall(balls.get(j));
             }
-            for (Wall w: walls.getWalls()) {
+            for (Wall w : walls.getWalls()) {
                 balls.get(i).collideWithWall(w);
             }
         }

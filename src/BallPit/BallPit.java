@@ -231,6 +231,7 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
 
     @Override
     public void keyReleased(KeyEvent e) {
+        intro = false;
         switch (Character.toUpperCase(e.getKeyChar())) {
             case ' ':
                 paused = !paused;
@@ -240,9 +241,19 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
             case 'O':
                 break;
             case 'R':
+                if (paused) {
+                    while (balls.getBalls().size() > 0) {
+                        balls.remove(0);
+                    }
+                    while (walls.getWalls().size() > 0) {
+                        walls.remove(0);
+                    }
+                    defaultWalls();
+                    paused = false;
+                    intro = true;
+                }
 
         }
-        intro = false;
     }
 
 }
