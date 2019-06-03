@@ -47,7 +47,7 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
         mouseHeld = false;
 
         intro = true;
-        paused = false;
+        paused = true;
 
         defaultWalls();
 
@@ -56,6 +56,13 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
         addKeyListener(this);
         addMouseMotionListener(this);
         setVisible(true);
+
+        for (int i = 400; i <= 700; i += 50) {
+            for (int j = 100; j < 300; j += 50) {
+                makeBall(i, j, i, j);
+            }
+        }
+        makeBall(200, 200, 210, 200);
     }
 
     private void defaultWalls() {
@@ -166,7 +173,7 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
         balls = new Balls();
         walls = new Walls();
         for (String line : data.split("\n")) {
-            switch(line.charAt(0)) {
+            switch (line.charAt(0)) {
                 case 'B':
                     balls.add(new Ball(line));
                     break;
@@ -247,24 +254,12 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
                 paused = !paused;
                 break;
             case 'S':
-//                if (paused) {
-//                    java.awt.EventQueue.invokeLater(new Runnable() {
-//                        public void run() {
-                            new SaveAsGUI(generateSaveData()).setVisible(true);
-//                        }
-//                    }
-//                    );
-//                }
+                paused = true;
+                new SaveAsGUI(generateSaveData()).setVisible(true);
                 break;
             case 'O':
-//                if (paused) {
-//                    java.awt.EventQueue.invokeLater(new Runnable() {
-//                        public void run() {
-                            new OpenGUI(this).setVisible(true);
-//                        }
-//                    }
-//                    );
-//                }
+                paused = true;
+                new OpenGUI(this).setVisible(true);
                 break;
             case 'R':
                 if (paused) {

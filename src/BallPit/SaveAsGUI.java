@@ -40,21 +40,18 @@ public class SaveAsGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        errorLabel = new javax.swing.JLabel();
         jPanel = new javax.swing.JPanel();
         TitleLabel = new javax.swing.JLabel();
         fileNameTextField = new javax.swing.JTextField();
         datLabel = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
+        errorLabel = new javax.swing.JLabel();
+        errorLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(300, 400));
         setMinimumSize(new java.awt.Dimension(300, 400));
         setPreferredSize(new java.awt.Dimension(300, 400));
-
-        errorLabel.setForeground(new java.awt.Color(255, 0, 0));
-        errorLabel.setLabelFor(fileNameTextField);
-        errorLabel.setToolTipText("");
 
         jPanel.setPreferredSize(new java.awt.Dimension(300, 200));
         jPanel.setRequestFocusEnabled(false);
@@ -65,14 +62,9 @@ public class SaveAsGUI extends javax.swing.JFrame {
 
         fileNameTextField.setText("SaveName");
         fileNameTextField.setToolTipText("");
-        fileNameTextField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                fileNameTextFieldMouseExited(evt);
-            }
-        });
-        fileNameTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fileNameTextFieldActionPerformed(evt);
+        fileNameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                fileNameTextFieldKeyReleased(evt);
             }
         });
 
@@ -86,6 +78,14 @@ public class SaveAsGUI extends javax.swing.JFrame {
             }
         });
 
+        errorLabel.setForeground(new java.awt.Color(255, 0, 0));
+        errorLabel.setLabelFor(fileNameTextField);
+        errorLabel.setToolTipText("");
+
+        errorLabel1.setForeground(new java.awt.Color(255, 0, 0));
+        errorLabel1.setLabelFor(fileNameTextField);
+        errorLabel1.setToolTipText("");
+
         javax.swing.GroupLayout jPanelLayout = new javax.swing.GroupLayout(jPanel);
         jPanel.setLayout(jPanelLayout);
         jPanelLayout.setHorizontalGroup(
@@ -93,18 +93,22 @@ public class SaveAsGUI extends javax.swing.JFrame {
             .addGroup(jPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelLayout.createSequentialGroup()
-                        .addComponent(fileNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(datLabel)
-                        .addContainerGap(118, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLayout.createSequentialGroup()
                         .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanelLayout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(saveButton))
                             .addComponent(TitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(15, 15, 15))))
+                        .addGap(15, 15, 15))
+                    .addGroup(jPanelLayout.createSequentialGroup()
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(errorLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelLayout.createSequentialGroup()
+                                .addComponent(fileNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(datLabel))
+                            .addComponent(errorLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(116, Short.MAX_VALUE))))
         );
         jPanelLayout.setVerticalGroup(
             jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,7 +119,11 @@ public class SaveAsGUI extends javax.swing.JFrame {
                 .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fileNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(datLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(errorLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                 .addComponent(saveButton)
                 .addContainerGap())
         );
@@ -125,9 +133,7 @@ public class SaveAsGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(errorLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(14, 14, 14)
                 .addComponent(jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(16, Short.MAX_VALUE))
         );
@@ -135,28 +141,12 @@ public class SaveAsGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addComponent(errorLabel))
-                    .addComponent(jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(189, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void fileNameTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileNameTextFieldMouseExited
-        // TODO add your handling code here:
-        File save = new File("src/BallPit/saves/" + fileNameTextField.getText() + ".dat");
-        if (fileNameTextField.getText().equals("")) {
-            errorLabel.setText("Please type a file name to save as.");
-        } else if (save.exists()) {
-            errorLabel.setText("File already exists and will be overwritten!");
-        } else {
-            errorLabel.setText("");
-        }
-    }//GEN-LAST:event_fileNameTextFieldMouseExited
 
     private void saveButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseReleased
         File datFile = new File("src/BallPit/saves/" + fileNameTextField.getText() + ".dat");
@@ -174,9 +164,20 @@ public class SaveAsGUI extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_saveButtonMouseReleased
 
-    private void fileNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileNameTextFieldActionPerformed
+    private void fileNameTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fileNameTextFieldKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_fileNameTextFieldActionPerformed
+        File save = new File("src/BallPit/saves/" + fileNameTextField.getText() + ".dat");
+        if (fileNameTextField.getText().equals("")) {
+            errorLabel.setText("Please type a file name");
+            errorLabel1.setText("to save as.");
+        } else if (save.exists()) {
+            errorLabel.setText("File already exists and ");
+            errorLabel1.setText("will be overwritten!");
+        } else {
+            errorLabel.setText("");
+            errorLabel1.setText("");
+        }
+    }//GEN-LAST:event_fileNameTextFieldKeyReleased
 
     /**
      * @param args the command line arguments
@@ -221,6 +222,7 @@ public class SaveAsGUI extends javax.swing.JFrame {
     private javax.swing.JLabel TitleLabel;
     private javax.swing.JLabel datLabel;
     private javax.swing.JLabel errorLabel;
+    private javax.swing.JLabel errorLabel1;
     private javax.swing.JTextField fileNameTextField;
     private javax.swing.JPanel jPanel;
     private javax.swing.JButton saveButton;
