@@ -167,6 +167,18 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
         twoDGraph.drawImage(back, null, 0, 0);
     }
 
+    public String generateSaveData() {
+        String data = "";
+        for (Ball b : balls.getBalls()) {
+            data += (b + "\n");
+        }
+        for (Wall w : walls.getWalls()) {
+            data += (w + "\n");
+        }
+        data += "end"; //so the last split doesn't return an empty array
+        return data;
+    }
+
     @Override
     public void run() {
         try {
@@ -237,6 +249,14 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
                 paused = !paused;
                 break;
             case 'S':
+                if (paused) {
+                    java.awt.EventQueue.invokeLater(new Runnable() {
+                        public void run() {
+                            new SaveAsGUI(generateSaveData()).setVisible(true);
+                        }
+                    }
+                    );
+                }
                 break;
             case 'O':
                 break;

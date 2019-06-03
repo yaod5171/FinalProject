@@ -34,6 +34,14 @@ public class Ball extends MovingObject /*implements Collideable*/ {
         this.color = color;
         updatePos();
     }
+    
+    public Ball(String data) {
+        super(Double.parseDouble(data.split(",")[1]), 
+               Double.parseDouble(data.split(",")[2]));
+        size = Integer.parseInt(data.split(",")[3]);
+        weight = Integer.parseInt(data.split(",")[4]);
+        color = new Color(Integer.parseInt(data.split(",")[5]));      
+    }
 
     /**
      * @return the size
@@ -239,6 +247,21 @@ public class Ball extends MovingObject /*implements Collideable*/ {
         window.fillOval(xPos - getSize(), yPos - getSize(), 2 * getSize(), 2 * getSize());
         window.setColor(Color.BLACK);
         //window.drawLine(xPos, yPos, xPos + (int) (10 * getSpeed() * Math.cos(getDir())), yPos + (int) (10 * getSpeed() * Math.sin(getDir())));
+    }
+    
+    /**
+     * Return a string, used to save the ball.
+     * 
+     * @return the ball data
+     */
+    public String toString() {
+        String out = "B,";
+        out += (getX() + ",");
+        out += (getY() + ",");
+        out += (size + ",");
+        out += (weight + ",");
+        out += (color.getRGB());
+        return out;
     }
 
 }

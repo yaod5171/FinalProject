@@ -7,19 +7,29 @@ package BallPit;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author yaod5171
  */
 public class SaveAsGUI extends javax.swing.JFrame {
-
+    
+    private String data = ""; //for debug purposes
     /**
      * Creates new form SaveAsGUI
      */
     public SaveAsGUI() {
         initComponents();
     }
+    
+    public SaveAsGUI(String data) {
+        initComponents();
+        this.data = data;
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -149,10 +159,19 @@ public class SaveAsGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_fileNameTextFieldMouseExited
 
     private void saveButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseReleased
-        // format the data
-        String data = "";
-        // write the data
-        //FileWriter fw = new FileWriter()
+        File datFile = new File("src/BallPit/saves/" + fileNameTextField.getText() + ".dat");
+        try {
+            if (datFile.exists()) {
+                datFile.delete();
+            }
+            datFile.createNewFile();
+            try (FileWriter fw = new FileWriter(datFile)) { //netbeans told me to do this
+                fw.write(data);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(SaveAsGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
     }//GEN-LAST:event_saveButtonMouseReleased
 
     private void fileNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileNameTextFieldActionPerformed
@@ -190,6 +209,10 @@ public class SaveAsGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new SaveAsGUI().setVisible(true);
+            }
+            
+            public void run(String data) {
+                new SaveAsGUI(data).setVisible(true);
             }
         });
     }
