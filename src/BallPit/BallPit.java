@@ -33,6 +33,8 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
     private boolean intro;
     private boolean paused;
 
+    private String openData;
+
     public BallPit() {
         size = 15;
         density = 1.0;
@@ -49,25 +51,6 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
 
         defaultWalls();
 
-//        balls.addBall(new Ball(200, 220, 15, 225));
-//        balls.addBall(new Ball(100, 100));
-//        balls.addBall(new Ball(200, 100));
-//        makeBall(100, 200, 200, 100);
-//        makeBall(300, 300, 200, 200);
-//        makeBall(500, 100, 500, 500);
-//        makeBall(520, 500, 520, 100);
-//        
-//        for (int i = 100; i <= 400; i+=50) {
-//            makeBall(i, 100, i, 100);
-//        }
-//        makeBall(500, 125, 400, 100);
-//        balls.get(4).setWeight(Integer.MAX_VALUE); //note: balls of infinite mass behave poorly.
-//        for (int i = 400; i < 700; i += 50) {
-//            for (int j = 100; j < 300; j += 50) {
-//                makeBall(i, j, i, j);
-//            }
-//        }
-//        makeBall(100, 300, 110, 300);
         new Thread(this).start();
         addMouseListener(this);
         addKeyListener(this);
@@ -179,6 +162,21 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
         return data;
     }
 
+    public void readSaveData(String data) {
+        balls = new Balls();
+        walls = new Walls();
+        for (String line : data.split("\n")) {
+            switch(line.charAt(0)) {
+                case 'B':
+                    balls.add(new Ball(line));
+                    break;
+                case 'W':
+                    walls.add(new Wall(line));
+                    break;
+            }
+        }
+    }
+
     @Override
     public void run() {
         try {
@@ -249,25 +247,29 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
                 paused = !paused;
                 break;
             case 'S':
-                if (paused) {
-                    java.awt.EventQueue.invokeLater(new Runnable() {
-                        public void run() {
+//                if (paused) {
+//                    java.awt.EventQueue.invokeLater(new Runnable() {
+//                        public void run() {
                             new SaveAsGUI(generateSaveData()).setVisible(true);
-                        }
-                    }
-                    );
-                }
+//                        }
+//                    }
+//                    );
+//                }
                 break;
             case 'O':
+//                if (paused) {
+//                    java.awt.EventQueue.invokeLater(new Runnable() {
+//                        public void run() {
+                            new OpenGUI(this).setVisible(true);
+//                        }
+//                    }
+//                    );
+//                }
                 break;
             case 'R':
                 if (paused) {
-                    while (balls.getBalls().size() > 0) {
-                        balls.remove(0);
-                    }
-                    while (walls.getWalls().size() > 0) {
-                        walls.remove(0);
-                    }
+                    balls = new Balls();
+                    walls = new Walls();
                     defaultWalls();
                     paused = false;
                     intro = true;

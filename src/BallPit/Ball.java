@@ -38,9 +38,11 @@ public class Ball extends MovingObject /*implements Collideable*/ {
     public Ball(String data) {
         super(Double.parseDouble(data.split(",")[1]), 
                Double.parseDouble(data.split(",")[2]));
-        size = Integer.parseInt(data.split(",")[3]);
-        weight = Integer.parseInt(data.split(",")[4]);
-        color = new Color(Integer.parseInt(data.split(",")[5]));      
+        this.setVX(Double.parseDouble(data.split(",")[3]));
+        this.setVY(Double.parseDouble(data.split(",")[4]));
+        size = Integer.parseInt(data.split(",")[5]);
+        weight = Integer.parseInt(data.split(",")[6]);
+        color = new Color(Integer.parseInt(data.split(",")[7]));      
     }
 
     /**
@@ -258,6 +260,8 @@ public class Ball extends MovingObject /*implements Collideable*/ {
         String out = "B,";
         out += (getX() + ",");
         out += (getY() + ",");
+        out += (getVX() + ",");
+        out += (getVY() + ",");
         out += (size + ",");
         out += (weight + ",");
         out += (color.getRGB());

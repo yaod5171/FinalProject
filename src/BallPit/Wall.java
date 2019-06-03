@@ -58,7 +58,7 @@ public class Wall extends PhysicsObject {
         out += (getX() + ",");
         out += (getY() + ",");
         out += (width + ",");
-        out += (height + ",");
+        out += (height);
         return out;
     }
 
