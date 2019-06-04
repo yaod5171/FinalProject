@@ -22,6 +22,14 @@ public class OpenGUI extends javax.swing.JFrame {
      */
     public OpenGUI() {
         initComponents();
+        File folder = new File("src/BallPit/saves/");
+        
+        jComboBox1.removeAllItems();
+        for (File f: folder.listFiles()) {
+            if (f.isFile()) {
+                jComboBox1.addItem(f.getName());
+            }
+        }
     }
     public OpenGUI(BallPit pit) {
         this();
@@ -40,6 +48,7 @@ public class OpenGUI extends javax.swing.JFrame {
         jPanel = new javax.swing.JPanel();
         TitleLabel = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,10 +59,17 @@ public class OpenGUI extends javax.swing.JFrame {
         TitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         TitleLabel.setText("Open");
 
-        saveButton.setText("Save");
+        saveButton.setText("Open");
         saveButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 saveButtonMouseReleased(evt);
+            }
+        });
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
             }
         });
 
@@ -63,19 +79,26 @@ public class OpenGUI extends javax.swing.JFrame {
             jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelLayout.createSequentialGroup()
-                        .addGap(0, 188, Short.MAX_VALUE)
-                        .addComponent(saveButton))
-                    .addComponent(TitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(15, 15, 15))
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanelLayout.createSequentialGroup()
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanelLayout.createSequentialGroup()
+                                .addGap(0, 186, Short.MAX_VALUE)
+                                .addComponent(saveButton))
+                            .addComponent(TitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(15, 15, 15))))
         );
         jPanelLayout.setVerticalGroup(
             jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(TitleLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
                 .addComponent(saveButton)
                 .addContainerGap())
         );
@@ -102,7 +125,7 @@ public class OpenGUI extends javax.swing.JFrame {
 
     private void saveButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseReleased
         try {
-            File datFile = new File("src/BallPit/saves/" + "testSave2.dat");
+            File datFile = new File("src/BallPit/saves/" + jComboBox1.getSelectedItem());
             Scanner read = new Scanner(datFile);
             String data = "";
             while (read.hasNextLine()) {
@@ -113,9 +136,14 @@ public class OpenGUI extends javax.swing.JFrame {
             ballpit.readSaveData(data);
             this.dispose();
         } catch (FileNotFoundException ex) {
+            System.out.println(jComboBox1.getSelectedItem());
             Logger.getLogger(OpenGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_saveButtonMouseReleased
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -154,6 +182,7 @@ public class OpenGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel TitleLabel;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JPanel jPanel;
     private javax.swing.JButton saveButton;
     // End of variables declaration//GEN-END:variables

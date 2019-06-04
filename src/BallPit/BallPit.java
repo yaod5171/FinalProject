@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.lang.Character;
 
 /**
  *
@@ -47,7 +46,7 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
         mouseHeld = false;
 
         intro = true;
-        paused = true;
+        paused = false;
 
         defaultWalls();
 
@@ -56,13 +55,6 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
         addKeyListener(this);
         addMouseMotionListener(this);
         setVisible(true);
-
-        for (int i = 400; i <= 700; i += 50) {
-            for (int j = 100; j < 300; j += 50) {
-                makeBall(i, j, i, j);
-            }
-        }
-        makeBall(200, 200, 210, 200);
     }
 
     private void defaultWalls() {
@@ -82,6 +74,7 @@ public class BallPit extends Canvas implements Runnable, MouseListener, MouseMot
      */
     public void makeBall(int x1, int y1, int x2, int y2) {
         final double SCALE = 0.025;
+        //density = Math.random()*5;
 
         Ball newBall = new Ball(x1, y1, size, (int) (Tools.square(size) * density));
         int dx = x2 - x1;
