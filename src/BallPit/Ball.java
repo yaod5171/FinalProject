@@ -100,7 +100,10 @@ public class Ball extends MovingObject /*implements Collideable*/ {
         float hue;
         if (density < densityTop) {
             hue = (float) (density / densityTop);
-            hue = 1 - hue;/*
+            hue = 1 - hue;
+            hue *= 0.8;
+            hue += 0;/*
+            
              hue += 0.2;
              hue = (float)Math.min(hue, 0.8);*/
 
